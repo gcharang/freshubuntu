@@ -118,19 +118,18 @@ if [[ $DONONROOT =~ ^[Yy]$ ]]; then
             echo "tmux persistence command already present in .bashrc"
         fi
     fi
+fi
 
-    read -p "Setup Swap Space? (y/n) " -n 1 DOSWAPSETUP
+read -p "Setup Swap Space? (y/n) " -n 1 DOSWAPSETUP
+echo
+if [[ $DOSWAPSETUP =~ ^[Yy]$ ]]; then
+    read -p "How much? (in GB): " SWAPSIZE
     echo
-    if [[ $DOSWAPSETUP =~ ^[Yy]$ ]]; then
-        read -p "How much? (in GB): " SWAPSIZE
-        echo
-        fallocate -l ${SWAPSIZE}G /swapfile
-        chmod 600 /swapfile
-        mkswap /swapfile
-        swapon /swapfile
-        echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
-        echo "Swap file created"
-        swapon --show
-    fi
-
+    fallocate -l ${SWAPSIZE}G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+    echo "Swap file created"
+    swapon --show
 fi
