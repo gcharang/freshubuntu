@@ -98,6 +98,12 @@ if [[ $DONONROOT =~ ^[Yy]$ ]]; then
         fi
     fi
 
+    read -p "Disable root login? " -n 1 DOROOTDISABLE
+    echo
+    if [[ $DOROOTDISABLE =~ ^[Yy]$ ]]; then
+        grep -q "^[#]*PermitRootLogin" /etc/ssh/sshd_config && sed -i "/^[#]*PermitRootLogin/c\PermitRootLogin no" /etc/ssh/sshd_config || echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+    fi
+
     read -p "Setup TMUX persistence? (y/n) " -n 1 DOTMUXSETUP
     echo
     if [[ $DOTMUXSETUP =~ ^[Yy]$ ]]; then
@@ -113,10 +119,18 @@ if [[ $DONONROOT =~ ^[Yy]$ ]]; then
         fi
     fi
 
-    read -p "Disable root login? " -n 1 DOROOTDISABLE
+    read -p "Setup Swap Space? (y/n) " -n 1 DOSWAPSETUP
     echo
-    if [[ $DOROOTDISABLE =~ ^[Yy]$ ]]; then
-        grep -q "^[#]*PermitRootLogin" /etc/ssh/sshd_config && sed -i "/^[#]*PermitRootLogin/c\PermitRootLogin no" /etc/ssh/sshd_config || echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+    if [[ $DOSWAPSETUP =~ ^[Yy]$ ]]; then
+        read -p "How much? (in GB): " SWAPSIZE
+        echo
+        fallocate -l ${SWAPSIZE}G /swapfile
+        chmod 600 /swapfile
+        mkswap /swapfile
+        swapon /swapfile
+        echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+        echo "Swap file created"
+        swapon --show
     fi
 
 fi
