@@ -101,7 +101,7 @@ if [[ $DONONROOT =~ ^[Yy]$ ]]; then
     read -p "Setup TMUX persistence? (y/n) " -n 1 DOTMUXSETUP
     echo
     if [[ $DOTMUXSETUP =~ ^[Yy]$ ]]; then
-        if ! command grep -Fxq "tmux ssh_tmux" /home/$NEWUSERNAME/.bashrc; then
+        if ! command grep -Fxq "creates the tmux session called" /home/$NEWUSERNAME/.bashrc; then
             echo "Appending the tmux persistence commands to .bashrc" 
             echo "\n# creates the tmux session called ssh_tmux if none exists or reattaches to an already existing session with that name." >> /home/$NEWUSERNAME/.bashrc
             echo 'if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then' >> /home/$NEWUSERNAME/.bashrc                
