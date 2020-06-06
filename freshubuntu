@@ -104,6 +104,24 @@ if [[ $DONONROOT =~ ^[Yy]$ ]]; then
         grep -q "^[#]*PermitRootLogin" /etc/ssh/sshd_config && sed -i "/^[#]*PermitRootLogin/c\PermitRootLogin no" /etc/ssh/sshd_config || echo "PermitRootLogin no" >>/etc/ssh/sshd_config
     fi
 
+    read -p "Update TMUX to the latest version and copy the dotfile for the new user (y/n) " -n 1 UPDATETMUX
+    echo
+    if [[ $UPDATETMUX =~ ^[Yy]$ ]]; then
+        sudo apt-get install libevent-dev build-essential bison pkg-config libncurses5-dev libncursesw5-dev
+        SCRIPT_DIR=$(pwd)
+        su - [$NEWUSERNAME]
+        rm -fr /tmp/tmux
+        mkdir -p /tmp/tmux
+        cd /tmp/tmux
+        wget -qO- https://github.com/tmux/tmux/releases/download/3.1b/tmux-3.1b.tar.gz | tar xzv
+        cd tmux-3.1b
+        ./configure
+        make && sudo make install
+        cp $SCRIPT_DIR/dotfiles/.tmux.conf ~/.tmux.conf
+        rm -fr /tmp/tmux
+        su -
+    fi
+
     read -p "Setup TMUX persistence for the new user? (y/n) " -n 1 DOTMUXSETUP
     echo
     if [[ $DOTMUXSETUP =~ ^[Yy]$ ]]; then
