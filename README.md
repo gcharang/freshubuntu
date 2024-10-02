@@ -25,7 +25,7 @@ On a fresh install of Ubuntu 16 or 18 follow these steps to get started and the 
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install git
 cd ~
-git clone https://github.com/webworker01/freshubuntu.git
+git clone https://github.com/gcharang/freshubuntu.git
 cd freshubuntu
 sudo ./freshubuntu
 ```
