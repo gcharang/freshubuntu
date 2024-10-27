@@ -92,7 +92,7 @@ if [[ $DONONROOT =~ ^[Yy]$ ]]; then
             grep -q "^[#]*ChallengeResponseAuthentication" /etc/ssh/sshd_config && sed -i "/^[#]*ChallengeResponseAuthentication/c\ChallengeResponseAuthentication no" /etc/ssh/sshd_config || echo "ChallengeResponseAuthentication no" >>/etc/ssh/sshd_config
             grep -q "^[#]*PasswordAuthentication" /etc/ssh/sshd_config && sed -i "/^[#]*PasswordAuthentication/c\PasswordAuthentication no" /etc/ssh/sshd_config || echo "PasswordAuthentication no" >>/etc/ssh/sshd_config
 
-            systemctl restart sshd.service
+            systemctl restart ssh
         else
             echo -e "\e[41mSorry, it won't be safe to do the final steps here then... take care.\e[0m"
         fi
